@@ -24,10 +24,16 @@ import { connect } from 'react-redux';
       //   <Text>Reddit</Text>
       //   {this.state.posts.map(post=>(<Text>{post.data.author}</Text>))}
       // </View>
-      export const Reddit = (props) => (
+    const _Reddit = (props) => (
       <View>
         {this.props.posts.map(posts=>(<Text>{posts.name}</Text>))}
       </View>
     )
+
+    const mapStateToProps = (state)=> ({
+      posts: state.reddit
+    })
+export const Reddit = connect(mapStateToProps, null)(_Reddit)
+
 //   }
 // }
