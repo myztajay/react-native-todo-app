@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {AppRegistry, StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { Todoform } from './Todoform'
 
 
 export class Todo extends Component {
@@ -11,61 +12,55 @@ export class Todo extends Component {
       newTodo: ''
     }
   }
-  componentWillMount(){
-    fetch('http://192.168.1.151:3000/todos', {
-      headers: {
-        'Accept': 'application/json'
-      }
-    })
-    .then(res =>res.json())
-    .then(todos =>{
-      this.setState({ todos })
-    })
-  }
+  // componentWillMount(){
+  //   fetch('http://192.168.1.151:3000/todos', {
+  //     headers: {
+  //       'Accept': 'application/json'
+  //     }
+  //   })
+  //   .then(res =>res.json())
+  //   .then(todos =>{
+  //     this.setState({ todos })
+  //   })
+  // }
 
   handleChange(text) {
     this.setState({newTodo: text})
-
   }
 
-  handlePress(){
-    // const todos = [...this.state.todos, this.state.newTodo]
-
-    fetch('http://192.168.1.151/todos', {
-      method: 'POST',
-      body: JSON.stringify ({
-        name: this.state.newTodo
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .catch(err=> console.warn(err))
-    .then(res=>res.json())
-    .then(todo => {
-      const todos = [todo, ...this.state.todos]
-      this.setState({
-        todos,
-        newTodo: ''
-      })
-    })
-
-  }
+  handlePress() {
+    const todos = [...this.state.todos, this.state.newTodo]
+    this.setState({todos, newTodo: ''});
+      // const newtodo = {
+      //   name: this.state.newTodo
+      // };
+      //
+      // fetch('http://192.168.1.151:3000/todos', {
+      //   method: 'post',
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Content-Type': 'application/json'
+      //   },
+      //
+      //   body: JSON.stringify(newtodo)
+      // })
+      //
+      // .then(data => data.json())
+      // .then(json => {
+      //   console.warn(json)
+      //   const todos = [...this.state.todos, newtodo];
+      //   this.setState({todos, newTodo: ''})
+      // });
+    }
 
   render(){
     return(
       <View style={styles.container}>
-        <View style={styles.form}>
-          <TextInput
-            style={styles.input}
-            onChangeText={this.handleChange.bind(this)}
-            value={this.state.newTodo}
-          />
-          <TouchableOpacity
-          style={styles.button}
-          onPress={this.handlePress.bind(this)}><Text> Add Todo</Text>
-          </TouchableOpacity>
-        </View>
+      <Todoform
+        handlePress={this.handlePress.bind(this)}
+        handleChange={this.handleChange.bind(this)}
+        value={this.state.newTodo}
+      />
         <View>
         {this.state.todos.map((todo, i)=> (<Text key={ i }>{ todo.name }</Text>))}
         </View>
